@@ -91,3 +91,78 @@ weather_df %>%
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
 ![](visualization_ii_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+## Scales
+
+### x and y scales
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minumum daily tempearture (C)",
+    y = "Maximnm daily tempearture (C)",
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  scale_x_continuous(
+    breaks = c(-15, 0, 15),
+    labels = c("-15 C", "0 C", "15C")
+  ) + 
+  scale_y_continuous(
+    trans = "sqrt", ##"log"
+    position = "right"
+  )
+```
+
+    ## Warning in self$trans$transform(x): NaNs produced
+
+    ## Warning: Transformation introduced infinite values in continuous y-axis
+
+    ## Warning: Removed 90 rows containing missing values (geom_point).
+
+![](visualization_ii_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+### Color scale
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minumum daily tempearture (C)",
+    y = "Maximnm daily tempearture (C)",
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  scale_color_hue(
+    name = "Location",
+    h = c(100,300))
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_ii_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+### Different type of color scale
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minumum daily tempearture (C)",
+    y = "Maximnm daily tempearture (C)",
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE
+  )
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_ii_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
