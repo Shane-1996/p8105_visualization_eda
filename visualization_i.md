@@ -27,14 +27,14 @@ library(ggridges)
 weather_df = 
   rnoaa::meteo_pull_monitors(
     c("USW00094728", "USC00519397", "USS0023B17S"),
-    var = c("PRCP", "TMIN", "TMAX"), 
+    var = c("PRCP", "TMIN", "TMAX"),
     date_min = "2017-01-01",
     date_max = "2017-12-31"
-    ) %>% 
+  ) %>% 
   mutate(
     name = recode(
       id,
-      USW00094728 = "CentralPark_NY", 
+      USW00094728 = "CentralPark_NY",
       USC00519397 = "Waikiki_HA",
       USS0023B17S = "Waterhole_WA"
     ),
@@ -65,3 +65,56 @@ weather_df =
     ## date created (size, mb): 2020-09-30 21:53:02 (0.877)
 
     ## file min/max dates: 1999-09-01 / 2020-09-30
+
+``` r
+head(weather_df)
+```
+
+    ## # A tibble: 6 x 6
+    ##   name           id          date        prcp  tmax  tmin
+    ##   <chr>          <chr>       <date>     <dbl> <dbl> <dbl>
+    ## 1 CentralPark_NY USW00094728 2017-01-01     0   8.9   4.4
+    ## 2 CentralPark_NY USW00094728 2017-01-02    53   5     2.8
+    ## 3 CentralPark_NY USW00094728 2017-01-03   147   6.1   3.9
+    ## 4 CentralPark_NY USW00094728 2017-01-04     0  11.1   1.1
+    ## 5 CentralPark_NY USW00094728 2017-01-05     0   1.1  -2.7
+    ## 6 CentralPark_NY USW00094728 2017-01-06    13   0.6  -3.8
+
+## Basic Scatterplots
+
+Create forst scatterplot.
+
+``` r
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+Another approach. (fit overall syntax)
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+Save and edit a plot object. (least frequently)
+
+``` r
+weather_plot = 
+  weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax))
+
+weather_plot + geom_point()
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
