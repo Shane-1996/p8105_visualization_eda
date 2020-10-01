@@ -166,3 +166,72 @@ weather_df %>%
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
 ![](visualization_ii_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+## Themes
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minumum daily tempearture (C)",
+    y = "Maximnm daily tempearture (C)",
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE
+  ) + 
+  theme_bw() + ## black and white grid
+  theme_minimal() + ##no box around the plot
+  theme(
+    legend.position = "bottom"
+  ) ## whole lots of option for legend
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_ii_files/figure-gfm/theme_1-1.png)<!-- -->
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minumum daily tempearture (C)",
+    y = "Maximnm daily tempearture (C)",
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE
+  ) + 
+  theme_classic() ## no grid, old fashion
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_ii_files/figure-gfm/theme_2-1.png)<!-- -->
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minumum daily tempearture (C)",
+    y = "Maximnm daily tempearture (C)",
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE
+  ) + 
+  ggthemes::theme_economist() ##thats what the ceonomists looks like, there are a lot of other themes.
+```
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_ii_files/figure-gfm/theme_3-1.png)<!-- -->

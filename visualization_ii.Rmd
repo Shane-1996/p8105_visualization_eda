@@ -112,7 +112,63 @@ weather_df %>%
     name = "Location",
     discrete = TRUE
   )
-
 ```
 
+
+## Themes
+
+```{r theme_1}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minumum daily tempearture (C)",
+    y = "Maximnm daily tempearture (C)",
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE
+  ) + 
+  theme_bw() + ## black and white grid
+  theme_minimal() + ##no box around the plot
+  theme(
+    legend.position = "bottom"
+  ) ## whole lots of option for legend
+```
+
+```{r theme_2}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minumum daily tempearture (C)",
+    y = "Maximnm daily tempearture (C)",
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE
+  ) + 
+  theme_classic() ## no grid, old fashion
+```
+
+```{r theme_3}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    title = "Temperature plot",
+    x = "Minumum daily tempearture (C)",
+    y = "Maximnm daily tempearture (C)",
+    caption = "Data from rnoaa package; temperatures in 2017."
+  ) +
+  viridis::scale_color_viridis(
+    name = "Location",
+    discrete = TRUE
+  ) + 
+  ggthemes::theme_economist() ##thats what the ceonomists looks like, there are a lot of other themes.
+```
 
