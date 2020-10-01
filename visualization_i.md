@@ -82,7 +82,7 @@ head(weather_df)
 
 ## Basic Scatterplots
 
-Create forst scatterplot.
+### Create forst scatterplot.
 
 ``` r
 ggplot(weather_df, aes(x = tmin, y = tmax)) + 
@@ -93,7 +93,7 @@ ggplot(weather_df, aes(x = tmin, y = tmax)) +
 
 ![](visualization_i_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
-Another approach. (fit overall syntax)
+### Another approach. (fit overall syntax)
 
 ``` r
 weather_df %>% 
@@ -105,7 +105,7 @@ weather_df %>%
 
 ![](visualization_i_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
-Save and edit a plot object. (least frequently)
+### Save and edit a plot object. (least frequently)
 
 ``` r
 weather_plot = 
@@ -118,3 +118,244 @@ weather_plot + geom_point()
     ## Warning: Removed 15 rows containing missing values (geom_point).
 
 ![](visualization_i_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+## Advanced Scatterplots
+
+### Make basics fancy
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + ##define another aesthetic mapping "color"
+  geom_point() + 
+  geom_smooth(se = FALSE) ##new geometry: geom_smooth, se = standard error, generally turnned off
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+``` r
+##`color = name` in ggplot() generate separate lines for each of 3 name factor. 
+```
+
+### About the ‘aes’ replacement
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name)) +
+  geom_smooth() 
+```
+
+    ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
+##`color = name` inn geom_point() generate one single blue line running through all
+```
+
+### Facet
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name) ##a multi-planel plot
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-6-1.png)<!-- --> `.
+~name`, `.`means don’t create rows, `name` defines columns. `~` called
+tilde.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE) +
+  facet_grid(name ~ .)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-7-1.png)<!-- --> the
+reverse for the previous one.
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point(alpha = .2) +      ##alpha level for transparency
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, alpha = tmin, color = name)) + 
+  ##alpha level be related to the precipitation variable
+  geom_point() +      
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 15 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+### Combine elements
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = date, y = tmax, color = name)) + 
+  geom_point(aes(size = prcp), alpha = 0.5) + 
+  geom_smooth(se = FALSE) + 
+  facet_grid(. ~ name)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_smooth).
+
+    ## Warning: Removed 3 rows containing missing values (geom_point).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+### Small Notes
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_smooth(se = FALSE)
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_smooth).
+
+![](visualization_i_files/figure-gfm/many%20geoms%20exist,%20have%20whatever%20you%20need-1.png)<!-- -->
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_hex() +
+  geom_density2d()
+```
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_binhex).
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_density2d).
+
+![](visualization_i_files/figure-gfm/neat%20geom-1.png)<!-- -->
+
+## Univariate plots
+
+### Histograms
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin)) + 
+  geom_histogram()
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_bin).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, fill = name)) + 
+  geom_histogram() + ##option: (position = "dodge")
+  facet_grid(. ~ name) ##don't need color or fill b/c separate plots
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_bin).
+
+![](visualization_i_files/figure-gfm/add%20color%20to%20histogram-1.png)<!-- -->
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, fill = name)) + 
+  geom_density(alpha = .3)
+```
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_density).
+
+![](visualization_i_files/figure-gfm/%60geom_density\(alpha,%20adjust\)%60-1.png)<!-- -->
+
+### Boxplot
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = name, y = tmin)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_boxplot).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+### Trendy plot
+
+``` r
+weather_df %>% 
+  ggplot(aes(x =name, y = tmin, fill = name)) +
+  geom_violin(alpha = .5) + ##cross between boxplot and density plot 
+  stat_summary(fun = "median")
+```
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_ydensity).
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_summary).
+
+    ## Warning: Removed 3 rows containing missing values (geom_segment).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+### Ridge plot – most popular in 2017
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmin, y = name)) +
+  geom_density_ridges()
+```
+
+    ## Picking joint bandwidth of 1.67
+
+    ## Warning: Removed 15 rows containing non-finite values (stat_density_ridges).
+
+![](visualization_i_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->

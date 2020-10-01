@@ -39,14 +39,14 @@ head(weather_df)
 
 ## Basic Scatterplots
 
-Create forst scatterplot.
+### Create forst scatterplot.
 
 ```{r}
 ggplot(weather_df, aes(x = tmin, y = tmax)) + 
   geom_point()
 ```
 
-Another approach. (fit overall syntax)
+### Another approach. (fit overall syntax)
 
 ```{r}
 weather_df %>% 
@@ -54,7 +54,7 @@ weather_df %>%
   geom_point()
 ```
 
-Save and edit a plot object. (least frequently)
+### Save and edit a plot object. (least frequently)
 
 ```{r}
 weather_plot = 
@@ -62,5 +62,140 @@ weather_plot =
   ggplot(aes(x = tmin, y = tmax))
 
 weather_plot + geom_point()
+```
+
+
+## Advanced Scatterplots
+
+### Make basics fancy
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + ##define another aesthetic mapping "color"
+  geom_point() + 
+  geom_smooth(se = FALSE) ##new geometry: geom_smooth, se = standard error, generally turnned off
+##`color = name` in ggplot() generate separate lines for each of 3 name factor. 
+```
+
+### About the 'aes' replacement
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name)) +
+  geom_smooth() 
+##`color = name` inn geom_point() generate one single blue line running through all
+```
+
+### Facet
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name) ##a multi-planel plot
+```
+`. ~name`, `.`means don't create rows, `name` defines columns. `~` called tilde. 
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE) +
+  facet_grid(name ~ .)
+```
+the reverse for the previous one.
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point(alpha = .2) +      ##alpha level for transparency
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name)
+```
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, alpha = tmin, color = name)) + 
+  ##alpha level be related to the precipitation variable
+  geom_point() +      
+  geom_smooth(se = FALSE) +
+  facet_grid(. ~ name)
+```
+
+### Combine elements
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = date, y = tmax, color = name)) + 
+  geom_point(aes(size = prcp), alpha = 0.5) + 
+  geom_smooth(se = FALSE) + 
+  facet_grid(. ~ name)
+```
+
+
+### Small Notes
+
+```{r many geoms exist, have whatever you need}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_smooth(se = FALSE)
+```
+
+```{r neat geom}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_hex() +
+  geom_density2d()
+```
+
+
+## Univariate plots
+
+### Histograms
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin)) + 
+  geom_histogram()
+```
+
+```{r add color to histogram}
+weather_df %>% 
+  ggplot(aes(x = tmin, fill = name)) + 
+  geom_histogram() + ##option: (position = "dodge")
+  facet_grid(. ~ name) ##don't need color or fill b/c separate plots
+```
+
+```{r `geom_density(alpha, adjust)`} 
+weather_df %>% 
+  ggplot(aes(x = tmin, fill = name)) + 
+  geom_density(alpha = .3)
+```
+
+### Boxplot 
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = name, y = tmin)) +
+  geom_boxplot()
+```
+
+### Trendy plot
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x =name, y = tmin, fill = name)) +
+  geom_violin(alpha = .5) + ##cross between boxplot and density plot 
+  stat_summary(fun = "median")
+```
+
+### Ridge plot -- most popular in 2017
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = name)) +
+  geom_density_ridges()
 ```
 
