@@ -1,5 +1,11 @@
 ---
-title: "Visulization I"
+title: "Visualization I"
 output: github_document
 author: Shunyi Zhang
 ---
+
+```{r setup}
+library(tidyverse)
+library(ggridges)
+```
+
