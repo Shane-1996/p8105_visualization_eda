@@ -114,3 +114,51 @@ weather_df %>%
 
 DON'T use the `table` function
 
+
+## General summaries
+
+```{r}
+weather_df %>% 
+  group_by(month) %>% 
+  summarise(
+    mean_tmax = mean(tmax, na.rm = TRUE),
+    mean_prcp = mean(prcp, na.rm = TRUE),
+    median_tmin = median(tmin, na.rm = TRUE)
+  ) ## NA for existing missing value
+```
+
+from dataframe to plot
+```{r}
+weather_df %>% 
+  group_by(name, month) %>% 
+  summarise(
+    mean_tmax = mean(tmax, na.rm = TRUE),
+    mean_prcp = mean(prcp, na.rm = TRUE),
+    median_tmin = median(tmin, na.rm = TRUE)
+  ) %>% 
+  ggplot(aes(x = month, y = mean_tmax, color = name)) +
+  geom_point() +
+  geom_line()
+```
+
+```{r}
+weather_df %>% 
+  group_by(name, month) %>% 
+  summarize(across(prcp:tmin, mean))
+```
+
+sometimes your result are easier to read in another format.
+
+```{r}
+weather_df %>% 
+  group_by(name, month) %>% 
+  summarize(
+    mean_tmax = mean(tmax)
+  ) %>% 
+  pivot_wider(
+    names_from = name,
+    values_from = mean_tmax
+  ) %>% 
+  knitr::kable(digits = 1)
+```
+
