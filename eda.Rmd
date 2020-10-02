@@ -6,8 +6,23 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r setup}
+```{r setup, include=FALSE}
 library(tidyverse)
+
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.asp = 6,
+  out.width = "90%")
+
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
 ```
 
 ```{r load data}
@@ -26,7 +41,17 @@ weather_df =
       USS0023B17S = "Waterhole_WA"
     ),
     tmin = tmin / 10,
-    tmax = tmax / 10
+    tmax = tmax / 10,
+    month = lubridate::floor_date(date, unit = "month")
   ) %>% 
   select(name, id, everything())
 ```
+
+
+## `group_by`
+
+```{r}
+weather_df %>% 
+  group_by(name, month)  ## %>% ungroup()
+```
+

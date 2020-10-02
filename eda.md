@@ -3,21 +3,6 @@ Exploratory analysis using data summaries
 Shunyi Zhang
 
 ``` r
-library(tidyverse)
-```
-
-    ## ── Attaching packages ──────────────────────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
-
-    ## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
-    ## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
-    ## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
-    ## ✓ readr   1.3.1     ✓ forcats 0.5.0
-
-    ## ── Conflicts ─────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-``` r
 weather_df = 
   rnoaa::meteo_pull_monitors(
     c("USW00094728", "USC00519397", "USS0023B17S"),
@@ -33,7 +18,8 @@ weather_df =
       USS0023B17S = "Waterhole_WA"
     ),
     tmin = tmin / 10,
-    tmax = tmax / 10
+    tmax = tmax / 10,
+    month = lubridate::floor_date(date, unit = "month")
   ) %>% 
   select(name, id, everything())
 ```
@@ -59,3 +45,26 @@ weather_df =
     ## date created (size, mb): 2020-09-30 21:53:02 (0.877)
 
     ## file min/max dates: 1999-09-01 / 2020-09-30
+
+## `group_by`
+
+``` r
+weather_df %>% 
+  group_by(name, month)  ## %>% ungroup()
+```
+
+    ## # A tibble: 1,095 x 7
+    ## # Groups:   name, month [36]
+    ##    name           id          date        prcp  tmax  tmin month     
+    ##    <chr>          <chr>       <date>     <dbl> <dbl> <dbl> <date>    
+    ##  1 CentralPark_NY USW00094728 2017-01-01     0   8.9   4.4 2017-01-01
+    ##  2 CentralPark_NY USW00094728 2017-01-02    53   5     2.8 2017-01-01
+    ##  3 CentralPark_NY USW00094728 2017-01-03   147   6.1   3.9 2017-01-01
+    ##  4 CentralPark_NY USW00094728 2017-01-04     0  11.1   1.1 2017-01-01
+    ##  5 CentralPark_NY USW00094728 2017-01-05     0   1.1  -2.7 2017-01-01
+    ##  6 CentralPark_NY USW00094728 2017-01-06    13   0.6  -3.8 2017-01-01
+    ##  7 CentralPark_NY USW00094728 2017-01-07    81  -3.2  -6.6 2017-01-01
+    ##  8 CentralPark_NY USW00094728 2017-01-08     0  -3.8  -8.8 2017-01-01
+    ##  9 CentralPark_NY USW00094728 2017-01-09     0  -4.9  -9.9 2017-01-01
+    ## 10 CentralPark_NY USW00094728 2017-01-10     0   7.8  -6   2017-01-01
+    ## # … with 1,085 more rows
