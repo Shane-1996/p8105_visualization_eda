@@ -244,8 +244,7 @@ library(tidyverse)
 knitr::opts_chunk$set(
   fig.width = 6,
   fig.asp = 6,
-  out.width = 90%
-)
+  out.width = "90%")
 
 theme_set(theme_minimal() + theme(legend.position = "bottom"))
 
@@ -355,3 +354,53 @@ tmax_tmin_p / (prcp_dens_p + tmax_date_p)
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
 ![](visualization_ii_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->
+
+## Data Manipulation
+
+### Control factors
+
+``` r
+weather_df %>% 
+  mutate(
+    name = factor(name),
+    name = forcats::fct_relevel(name, c("Waikiki_HA"))
+  ) %>% 
+  ggplot(aes(x = name, y = tmax, fill = name)) +
+  geom_violin(alpha = .5)
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
+
+![](visualization_ii_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+### Want densities for tmin and tmac simultaneously
+
+``` r
+weather_df %>% 
+  filter(name == "CentralPark_NY") %>% 
+  pivot_longer(
+    tmax:tmin,
+    names_to = "observation",
+    values_to = "temperatures"
+  ) %>% 
+  ggplot(aes(x = temperatures, fill = observation)) +
+  geom_density(alpha = .5)
+```
+
+![](visualization_ii_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+``` r
+weather_df %>% 
+  pivot_longer(
+    tmax:tmin,
+    names_to = "observation",
+    values_to = "temperatures"
+  ) %>% 
+  ggplot(aes(x = temperatures, fill = observation)) +
+  geom_density(alpha = .5) + 
+  facet_grid(. ~ name)
+```
+
+    ## Warning: Removed 18 rows containing non-finite values (stat_density).
+
+![](visualization_ii_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
