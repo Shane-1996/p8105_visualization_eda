@@ -316,9 +316,7 @@ weather_df %>%
 
 <img src="eda_files/figure-gfm/unnamed-chunk-10-1.png" width="90%" />
 
-## windows functions
-
-ranking
+### windows functions
 
 ``` r
 weather_df %>% 
@@ -342,8 +340,6 @@ weather_df %>%
     ##  9 CentralPark_NY USW00094728 2017-09-30     0  18.9  12.2 2017-09-01         1
     ## 10 CentralPark_NY USW00094728 2017-10-31     0  13.9   7.2 2017-10-01         1
     ## # … with 32 more rows
-
-lag
 
 ``` r
 weather_df %>% 

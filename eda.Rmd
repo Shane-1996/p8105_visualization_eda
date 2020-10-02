@@ -148,7 +148,6 @@ weather_df %>%
 ```
 
 sometimes your result are easier to read in another format.
-
 ```{r}
 weather_df %>% 
   group_by(name, month) %>% 
@@ -176,18 +175,16 @@ weather_df %>%
   geom_point()
 ```
 
-## windows functions
+### windows functions
 
-ranking
-```{r}
+```{r ranking}
 weather_df %>% 
   group_by(name, month) %>% 
   mutate(temp_rank = min_rank(tmax)) %>% 
   filter(temp_rank == 1)
 ```
 
-lag
-```{r}
+```{r lag}
 weather_df %>% 
   group_by(name) %>% 
   mutate(temp_change = tmax - lag(tmax)) %>% 
@@ -196,6 +193,9 @@ weather_df %>%
     temp_change_sd = sd(temp_change, na.rm = TRUE)
   )
 ```
+
+
+
 
 
 
